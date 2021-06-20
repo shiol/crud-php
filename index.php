@@ -25,6 +25,6 @@
 ?>
 </table>
 
-<p>
-    <a href="cadastro.html">cadastro</href>
-</p>
+<p><a href="cadastro.html">cadastro</href></p>
+
+<p><a href="contato.html">contato</href></p>

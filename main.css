@@ -1,0 +1,26 @@
+body {
+    background-color: #333;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #fff;
+}
+
+table {
+    color: #000;
+    border-radius: 5px;
+}
+
+th {
+    background-color: #0cc;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+td {
+    background-color: #ccc;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+a {
+    color: #0f0;
+}

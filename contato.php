@@ -1,3 +1,5 @@
+<?php include('head.php'); ?>
+
 <h1>contato</h1>
 
 <ul>
@@ -6,4 +8,4 @@
   <li><a href="tel:+5581998243000">telefone</a></li>
 </ul>
 
-<p><a href="index.php">index</a></p>
+<?php include('end.php'); ?>

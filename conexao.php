@@ -6,7 +6,7 @@ try {
 
     $conexao = new PDO($dns, $username, $password);
     $conexao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    echo "<p>conexao ok</p>";
+    $_SESSION['notification'] = "conexao ok";
 } catch (Exception $e) {
-    echo "<p>erro de conexao: " . $e->getMessage() . "</p>";
+    $_SESSION['notification'] = "erro de conexao: " . $e->getMessage();
 }

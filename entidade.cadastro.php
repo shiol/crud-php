@@ -9,7 +9,7 @@
     <p><input type="text" id="codigo" name="codigo" placeholder="codigo" required></p>
     <p><input type="text" id="descricao" name="descricao" placeholder="descricao" required></p>
     <p><input type="text" id="valor" name="valor" placeholder="valor" required></p>
-    <input type="submit" name="submit" value="salvar">
+    <input type="submit" name="submit" value="submit">
 </form>
 
 <?php
@@ -23,19 +23,7 @@ try {
 
     $acao = $_GET['acao'] ?? $_POST['acao'] ?? '';
     $submit = $_POST['submit'] ?? false;
-
-    $result = $conexao->query("select * from entidades where id = '$id'");
-    foreach ($result as $row) {
-        echo '<script>';
-        echo "document.getElementById('id').value = '" . $row['id'] . "';";
-        echo "document.getElementById('codigo').value = '" . $row['codigo'] . "';";
-        echo "document.getElementById('descricao').value = '" . $row['descricao'] . "';";
-        echo "document.getElementById('valor').value = " . $row['valor'] . ";";
-
-        echo "document.getElementById('acao').value = '" . $acao . "';";
-        echo '</script>';
-    }
-
+    
     $query;
     if ($id != '' && $acao == 'editar') {
         $query = "update entidades set codigo = '$codigo', ";
@@ -49,10 +37,22 @@ try {
         $query = "insert into entidades (id, codigo, descricao, valor) ";
         $query .= "values (uuid(), '$codigo', '$descricao', $valor)";
     }
-
+    
     if ($submit) {
         $rows = $conexao->exec($query);
         $_SESSION['notification'] = "$rows linhas alteradas";
+    }
+
+    $result = $conexao->query("select * from entidades where id = '$id'");
+    foreach ($result as $row) {
+        echo '<script>';
+        echo "document.getElementById('id').value = '" . $row['id'] . "';";
+        echo "document.getElementById('codigo').value = '" . $row['codigo'] . "';";
+        echo "document.getElementById('descricao').value = '" . $row['descricao'] . "';";
+        echo "document.getElementById('valor').value = " . $row['valor'] . ";";
+    
+        echo "document.getElementById('acao').value = '" . $acao . "';";
+        echo '</script>';
     }
 } catch (Exception $e) {
     $_SESSION['notification'] = "erro: " . $e->getMessage();

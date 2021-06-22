@@ -2,14 +2,18 @@
 
 <h1>entidades</h1>
 
+<p><a href="entidade.cadastro.php">cadastro</a></p>
+
 <table>
     <tr>
         <th>id</th>
         <th>codigo</th>
         <th>descricao</th>
         <th>valor</th>
+        <th>editar</th>
+        <th>excluir</th>
     </tr>
-<?php
+    <?php
     include('conexao.php');
     $result = $conexao->query("select * from entidades");
 
@@ -22,11 +26,13 @@
         echo $row['descricao'];
         echo '</td><td>';
         echo $row['valor'];
+        echo '</td><td>';
+        echo "<a href=\"entidade.cadastro.php?id=" . $row['id'] . "&acao=editar\">editar</a>";
+        echo '</td><td>';
+        echo "<a href=\"entidade.cadastro.php?id=" . $row['id'] . "&acao=excluir\">excluir</a>";
         echo '</td></tr>';
     }
-?>
+    ?>
 </table>
-
-<p><a href="entidade.cadastro.php">cadastro</a></p>
 
 <?php include('end.php'); ?>

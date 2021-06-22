@@ -1,30 +1,58 @@
 <?php include('head.php'); ?>
 <h1>cadastro</h1>
 
+<p><a href="entidade.index.php">index</a></p>
+
 <form action="entidade.cadastro.php" method="POST">
-    <p><input type="text" name="codigo" placeholder="codigo" require></p>
-    <p><input type="text" name="descricao" placeholder="descricao" require></p>
-    <p><input type="text" name="valor" placeholder="valor" require></p>
-    <input type="submit" value="salvar">
+    <input type="hidden" id="id" name="id">
+    <input type="hidden" id="acao" name="acao">
+    <p><input type="text" id="codigo" name="codigo" placeholder="codigo" required></p>
+    <p><input type="text" id="descricao" name="descricao" placeholder="descricao" required></p>
+    <p><input type="text" id="valor" name="valor" placeholder="valor" required></p>
+    <input type="submit" name="submit" value="salvar">
 </form>
 
 <?php
 try {
     include('conexao.php');
-    $codigo = isset($_POST['codigo']) ? $_POST['codigo'] : '';
-    $descricao = isset($_POST['descricao']) ? $_POST['descricao'] : '';
-    $valor = isset($_POST['valor']) ? $_POST['valor'] : null;
 
-    $formValid = $codigo != '' && $descricao != '' && !is_null($valor);
-    if ($formValid) {
-        if ($formValid) {
-            $query = "insert into entidades (id,codigo,descricao,valor) ";
-            $query .= "values (uuid(),'$codigo','$descricao',$valor)";
+    $id = $_POST['id'] ?? $_GET['id'] ?? '';
+    $codigo = $_POST['codigo'] ?? '';
+    $descricao = $_POST['descricao'] ?? '';
+    $valor = $_POST['valor'] ?? '';
 
-            if ($conexao->exec($query) > 0) {
-                $_SESSION['notification'] = "registro salvo com sucesso";
-            }
-        }
+    $acao = $_GET['acao'] ?? $_POST['acao'] ?? '';
+    $submit = $_POST['submit'] ?? false;
+
+    $result = $conexao->query("select * from entidades where id = '$id'");
+    foreach ($result as $row) {
+        echo '<script>';
+        echo "document.getElementById('id').value = '" . $row['id'] . "';";
+        echo "document.getElementById('codigo').value = '" . $row['codigo'] . "';";
+        echo "document.getElementById('descricao').value = '" . $row['descricao'] . "';";
+        echo "document.getElementById('valor').value = " . $row['valor'] . ";";
+
+        echo "document.getElementById('acao').value = '" . $acao . "';";
+        echo '</script>';
+    }
+
+    $query;
+    if ($id != '' && $acao == 'editar') {
+        $query = "update entidades set codigo = '$codigo', ";
+        $query .= "descricao = '$descricao', ";
+        $query .= "valor = $valor ";
+        $query .= "where id = '$id'";
+    } else if ($id != '' && $acao == 'excluir') {
+        $query = "delete from entidades ";
+        $query .= "where id = '$id'";
+    } else if ($id == '') {
+        $query = "insert into entidades (id, codigo, descricao, valor) ";
+        $query .= "values (uuid(), '$codigo', '$descricao', $valor)";
+    }
+
+    if ($submit) {
+        $rows = $conexao->exec($query);
+        $_SESSION['notification'] = "$rows linhas alteradas";
     }
 } catch (Exception $e) {
     $_SESSION['notification'] = "erro: " . $e->getMessage();
@@ -32,7 +60,5 @@ try {
     $conexao = null;
 }
 ?>
-
-<p><a href="entidade.index.php">index</a></p>
 
 <?php include('end.php'); ?>

@@ -40,7 +40,7 @@ try {
     
     if ($submit) {
         $rows = $conexao->exec($query);
-        $_SESSION['notification'] = "$rows linhas alteradas";
+        $_SESSION['notification'] = "$rows linha alterada";
     }
 
     $result = $conexao->query("select * from entidades where id = '$id'");
